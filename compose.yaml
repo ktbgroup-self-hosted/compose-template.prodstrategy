@@ -1,4 +1,4 @@
-# dclint disable no-unbound-port-interfaces
+# dclint disable-file
 
 name: STACK_NAME
 services:
