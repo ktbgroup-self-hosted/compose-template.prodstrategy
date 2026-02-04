@@ -1,23 +1,17 @@
 # dclint disable-file
-
+---
 name: STACK_NAME
 services:
-  APP_NAME: # APP_NAME should match accross compose.yaml
+  APP_NAME:
     image: IMAGE_NAME:1.0 # Must pin a version. Can use @sha...
     container_name: APP_NAME # APP_NAME should match accross compose.yaml
     volumes:
-       # ${DOCKER_VOLUMES}: Ansible Created.  Injected to .env via ansible.
-      - ${DOCKER_VOLUMES}/STACK_NAME/data/APP_NAME:/path/in/app
-      - ${DOCKER_VOLUMES}/STACK_NAME/config/APP_NAME:/path/in/app
+      # ${DOCKER_VOLUMES}: Set in Komodo on default repo template
+      - ${DOCKER_VOLUMES}/STACK_NAME/APP_NAME/data:/path/in/app
+      - ${DOCKER_VOLUMES}/STACK_NAME/APP_NAME/config:/path/in/app
     environment:
-       # Use A: B instead of - A=B. Just my preference
+      # Use A: B instead of - A=B. Just my preference
       EXAMPLE: VAR
-    env_file:
-      # `injected.env`: Ansible Created. Injected.
-      # Must be in all containers so they can read injected secrets
-      - ./injected.env
     ports:
-      # ${LOCAL_IP}: Ansible Created. Injected into `.env`.
-      # Must bind ports to an IP Address. Using ${LOCAL_IP} will provide the default behavior you are probably looking for.
-      - '${LOCAL_IP}:HOST_PORT:CONTAINER_PORT'
+      - "HOST_PORT:CONTAINER_PORT"
     restart: unless-stopped
