@@ -1,10 +1,10 @@
-# Docker Compose || Template Stack
+# Template **Compose** Stack (*Docker Compose*)
 
-## Compose with Environments Strategy
+## **Compose** with Environments Strategy
 
-The "Environments Strategy" just refers to having the ability to deploy stacks intended for "staging" (adding new changes, testing new configurations, anything new, etc.) and "production" (actual usage of container). This approach minimizes downtime while simultaneously allowing for continuous improvements.
+The "Environments Strategy" just refers to having the ability to deploy stacks intended for "staging" (adding new changes, testing new configurations, anything new, etc.) and "production" (actual usage of container). This approach minimizes downtime while simultaneously allowing for continuous improvements. Containers will now either be ran in a **"production environment"** or **"staging environment"**. All this really means is we are changing the names of resources and swapping out real data for fake data that we can mess up. One example to illustrate this would be that different "environments" will use **completely different volumes** which means your data you actually care about and use is safe. (and you can accidentally drop a database without concern!)
 
-### Starting Containers for Specific Environment
+### Starting **Containers**
 
 The following command is an example of how you would start the "production environment" version of a stack. All of the following information applies to the "staging environment" as well (just swapping out the phrase "production" for "staging").
 
@@ -41,3 +41,13 @@ stackname-environment_resource
 **stackname-environment:** this is really two separate things but are set together. references the name set at the top of a compose file. It prefixes all resource names and is manually added to container names. With this strategy, the `name:` attribute can be found in both the `compose.production.yaml` and `compose.staging.yaml` near the top of the file at the root level. The compose file should specify both **stackname** and **environment** in the `name` attribute.
 
 **resource:** this is any given resource created by the target compose stack. Inlcudes things like container, volume, network, etc.
+
+## Linting & Formatting
+
+Yes, linting is a weird thing to hear in relation to docker compose; however, it shouldn't be! We all want files that look the same and work as intended. Linting and formatting is done using a tool called `dclint` which is installed with **npm**.
+
+**Before pushing any changes to a compose file, run the `lint.sh` script in the root of your project.** This will loop through all folders in the current directory, finding compose files and running `dclint` with the `--fix` flag to format and lint them. Below are definitions of linting and formatting related files.
+
+`lint.sh`: Runner for **dclint** (*npm package*) to find all compose files in a directory and run `dclint --fix` to format and lint them.
+
+`.dclintrc`: Definitions for **dclint** to follow. Can be used to ignore certain linting errors, change them to only warnings, or disable them all together.
