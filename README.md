@@ -1,6 +1,6 @@
 # Template **Compose** Stack (*Docker Compose*)
 
-## **Compose** with Environments Strategy
+## **Compose** with "Environments Strategy"
 
 The "Environments Strategy" just refers to having the ability to deploy stacks intended for "staging" (adding new changes, testing new configurations, anything new, etc.) and "production" (actual usage of container). This approach minimizes downtime while simultaneously allowing for continuous improvements. Containers will now either be ran in a **"production environment"** or **"staging environment"**. All this really means is we are changing the names of resources and swapping out real data for fake data that we can mess up. One example to illustrate this would be that different "environments" will use **completely different volumes** which means your data you actually care about and use is safe. (and you can accidentally drop a database without concern!)
 
