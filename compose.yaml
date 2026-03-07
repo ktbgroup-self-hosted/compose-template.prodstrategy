@@ -1,17 +1,13 @@
-# dclint disable-file
 ---
-name: STACK_NAME
 services:
-  APP_NAME:
-    image: IMAGE_NAME:1.0 # Must pin a version. Can use @sha...
-    container_name: APP_NAME # APP_NAME should match accross compose.yaml
-    volumes:
-      # ${DOCKER_VOLUMES}: Set in Komodo on default repo template
-      - ${DOCKER_VOLUMES}/STACK_NAME/APP_NAME/data:/path/in/app
-      - ${DOCKER_VOLUMES}/STACK_NAME/APP_NAME/config:/path/in/app
-    environment:
-      # Use A: B instead of - A=B. Just my preference
-      EXAMPLE: VAR
+  app:
+    image: APPNAME:${APPNAME_VERS_TAG}
     ports:
-      - "HOST_PORT:CONTAINER_PORT"
-    restart: unless-stopped
+      - "${APPNAME_HOST_PORT}:${APPNAME_CONTAINER_PORT}"
+
+networks:
+  default:
+    name: internal
+
+volumes:
+  app:
