@@ -2,6 +2,7 @@
 services:
   app:
     image: APPNAME:${APPNAME_VERS_TAG}
+    container_name: ${COMPOSE_PROJECT_NAME}_APPNAME
     ports:
       - "${APPNAME_HOST_PORT}:${APPNAME_CONTAINER_PORT}"
 
