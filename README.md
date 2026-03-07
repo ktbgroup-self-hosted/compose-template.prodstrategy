@@ -30,6 +30,17 @@ This specifies `compose.yaml` as the base compose yaml file and `compose.product
 
 This specifies an env file to use purely for variable interpolation in any of the `compose*.yaml` (`compose.yaml`, `compose.production.yaml`, `compose.staging.yaml`) files. The reason for specifying it in the command is so all compose files have access to it for interpolation whereas specifying an env file with the `env_file:` attribute in a compose file only allow for injection of the variables into the container, which `./envs/production.env` is used for.
 
+## Files & Structure Explained
+
+### Files & Folders
+
+- `compose.yaml`: Base template for defining a service. Includes any attributes and resources used in both the "staging" and "production" environments (like `image: myimage:latest`).
+- `compose.production.yaml`: Configuration of service for actual usage. Looks very similar to `compose.yaml` but only includes attributes that should be overridden **specifically for production** (like `ports:` or app environment variables).
+- `compose.production.yaml`: Configuration of service for testing and improvements. Looks very similar to `compose.yaml` but only includes attributes that should be overridden **specifically for staging** (like `ports:` or app environment variables).
+- `config/`: Directory storing env files for production and staging environments **ONLY USED FOR INTERPOLATION**.
+- `envs/`: Directory storing env files for production and staging environments **ONLY USED FOR DIRECT INJECTION OF VARIABLES INTO CONTAINERS**.
+  - Note: Only two files exist in this folder for template purposes, but when creating a stack or project with multiple tightly knit services that need to remain in the same compose file, you **should create more (or different) env files** to only pass in the variables required for the application it is injected into. The naming convention for these files should be `servicename.production.env`.
+
 ### Referencing Resources Across Compose Files
 
 If you need to reference a container, network, volume, etc. you will need to use the following format as the typical conventions get adjusted for environments (since there can be no duplicate resource names).
@@ -38,7 +49,7 @@ If you need to reference a container, network, volume, etc. you will need to use
 stackname-environment_resource
 ```
 
-**stackname-environment:** this is really two separate things but are set together. references the name set at the top of a compose file. It prefixes all resource names and is manually added to container names. With this strategy, the `name:` attribute can be found in both the `compose.production.yaml` and `compose.staging.yaml` near the top of the file at the root level. The compose file should specify both **stackname** and **environment** in the `name` attribute.
+**stackname-environment:** This is really two separate things but are both set in the `name:` attribute at the top of a compose file. It prefixes all resource names and is manually added to container names. With this strategy, the `name:` attribute can be found in both the `compose.production.yaml` and `compose.staging.yaml` near the top of the file at the root level. The compose file should specify both **stackname** and **environment** in the `name` attribute.
 
 **resource:** this is any given resource created by the target compose stack. Inlcudes things like container, volume, network, etc.
 
