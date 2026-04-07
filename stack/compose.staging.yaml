@@ -1,6 +1,4 @@
 ---
-name: app-${DOCKER_ENVIRONMENT}
-
 services:
   app:
     env_file:
